@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\LoginUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,22 +16,21 @@ class UserController extends Controller
     {
         return View('user.create');
     }
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-
-        $request->validate([
-            'name' =>'required',
-            'email' =>'required|email|unique:users',
-            'password' =>'required|confirmed',
-        ]);
         $user = User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=> Hash::make($request->password),
-        ]  );
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+        ]);
+
         session()->flash('success' , 'Successful registration');
         Auth::login($user);
         return redirect('');
+
+    }
+
+    public function update(CreateUserRequest $request) {
 
     }
 
@@ -37,16 +38,11 @@ class UserController extends Controller
     {
         return view('user.login');
     }
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
-        $request->validate([
-            'email' =>'required|email',
-            'password' =>'required',
-        ]);
-
         if(Auth::attempt([
-            'email'=>$request->email,
-            'password'=> $request->password,
+            'email'=>$request->get('email'),
+            'password'=> $request->get('password'),
         ]))
         {
             return redirect('');

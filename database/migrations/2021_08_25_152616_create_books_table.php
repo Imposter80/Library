@@ -14,15 +14,28 @@ class CreateBooksTable extends Migration
     public function up()
     {
         Schema::create('books', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('title');
             $table->integer('pages');
             $table->date('redaction');
-            $table->integer('author_id');
-            $table->integer('library_id');
+            $table->foreignId('author_id');
+            $table->foreignId('library_id');
             $table->timestamps();
+
+            $table->foreign('author_id')
+                ->references('id')
+                ->on('authors')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('library_id')
+                ->references('id')
+                ->on('libraries')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

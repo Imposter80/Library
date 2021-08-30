@@ -5,6 +5,8 @@
     <div class="container">
         <h2>Регистрация пользователя</h2>
 
+
+
         <form method="post" action="{{route('register.store')}}">
             @csrf
 
