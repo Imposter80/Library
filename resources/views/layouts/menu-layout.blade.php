@@ -6,36 +6,23 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
 
-                     @auth
+                    @auth
 
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{ url('') }}">Home</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route('login.create')}}">{{auth()->user()->name}}</a>
+                            <a class="nav-link" href="{{ url('') }}">{{auth()->user()->name}}</a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('logout')}}">Выйти</a>
                         </li>
                     @endauth
-
-                    @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('register.create')}}">Регистрация</a>
-                        </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('login.create')}}">Войти</a>
                         </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link3</a>
-                        </li>
-
-                    @endguest
-
 
                 </ul>
                 <form class="d-flex">
@@ -45,12 +32,12 @@
             </div>
         </div>
     </nav>
-<div class="mt-5">
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{session('success')}}
-        </div>
-     @endif
+    <div class="mt-5">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{session('success')}}
+            </div>
+        @endif
 
         @if(session('error'))
             <div class="alert alert-danger">
@@ -71,6 +58,6 @@
 
 
 
-</div>
+    </div>
 </header>
 

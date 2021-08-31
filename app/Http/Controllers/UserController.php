@@ -12,33 +12,13 @@ use Illuminate\View\View;
 
 class UserController extends Controller
 {
-    public function create()
+
+
+    public function loginForm()                  // формa для входа
     {
-        return View('user.create');
+        return view('pages.index');
     }
-    public function store(CreateUserRequest $request)
-    {
-        $user = User::create([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'password' => Hash::make($request->get('password')),
-        ]);
-
-        session()->flash('success' , 'Successful registration');
-        Auth::login($user);
-        return redirect('');
-
-    }
-
-    public function update(CreateUserRequest $request) {
-
-    }
-
-    public function loginForm()
-    {
-        return view('user.login');
-    }
-    public function login(LoginUserRequest $request)
+    public function login(LoginUserRequest $request)  // вход
     {
         if(Auth::attempt([
             'email'=>$request->get('email'),
@@ -51,10 +31,10 @@ class UserController extends Controller
 
 
     }
-    public function logout()
+    public function logout()           //выход
     {
         Auth::logout();
-        return redirect()->route('login.create');
+        return redirect()->route('pages.index');
     }
 
 }

@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Admin\AdminUserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
+
 
 
 /*
@@ -24,19 +26,32 @@ Route::view('/' , 'pages/index' )->name('pages.index');
 
 Route::group(['middleware' => 'guest'], function ()
 {
-    Route::get('/register' , [UserController::class ,'create'])->name('register.create');
-    Route::post('/register' , [UserController::class ,'store'])->name('register.store');
-
-    Route::get('/login', [UserController::class ,'loginForm'])->name('login.create');
-    Route::post('/login', [UserController::class ,'login'])->name('login');
-
+    Route::get('/login', [UserController::class ,'loginForm'])->name('login.create');  //показывает форму для входа
+    Route::post('/login', [UserController::class ,'login'])->name('login');            //принимает данные из формы для входа
 });
 
-Route::get('/logout', [UserController::class ,'logout'])->name('logout') ->middleware('auth');
 
-Route::group(['middleware' =>'admin', 'prefix'=>'admin', 'namespace' =>'Admin'], function ()
+
+Route::get('/logout', [UserController::class ,'logout'])->name('logout') ->middleware('auth'); //выход пользователя
+
+
+
+Route::group(['middleware' =>'admin', 'prefix' => 'admin', 'as'=>'admin','namespace' =>'Admin' ], function ()
 {
-    Route::get('/', [MainController::class, 'index']);
+    Route::get('/', [MainController::class, 'index'])->name('.main');
+
+//users
+    Route::get('/register' , [AdminUserController::class ,'create'])->name('register.create');
+    Route::post('/register' , [AdminUserController::class ,'store'])->name('register.store');
+
+    Route::get('/users' , [AdminUserController::class ,'list'])->name('register.list');
+
+    Route::get('{id}/edit' , [AdminUserController::class ,'edit'])->name('register.edit');
+
+    Route::put('users/{id}' , [AdminUserController::class ,'update'])->name('register.update');
+    Route::delete('users/{id}' , [AdminUserController::class ,'destroy'])->name('register.destroy');
+
+
 });
 
 
